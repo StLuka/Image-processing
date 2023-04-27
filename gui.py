@@ -2,8 +2,8 @@ from tkinter import *
 from functions import *
 from tkinter import filedialog
 
-path = 'D:/Fakultet/Image processing/Prezentacija/preikestolen.jpg'
-img = cv2.imread(path)
+#path = 'D:/Fakultet/Image processing/Prezentacija/preikestolen.jpg'
+#img = cv2.imread(path)
 
 
 class InstagramForPoor:
@@ -12,6 +12,8 @@ class InstagramForPoor:
         root.title('Instagram for poor')
         root.geometry('500x350')
         root.maxsize(1920, 1080)
+
+        self.functions = Functions(None)
 
         frame = LabelFrame(root, padx='10', pady='10')
         frame.pack(padx='10', pady='10')
@@ -158,7 +160,7 @@ class InstagramForPoor:
             proc = -100
         if proc > 100:
             proc = 100
-        Functions.contrast(img, proc)
+        self.functions.contrast(proc)
 
     def press_brightness_button(self):
         proc = float(self.brightness_text.get())
@@ -166,7 +168,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.brightness(img, proc)
+        self.functions.brightness(proc)
 
     def press_black_and_white_button_button(self):
         proc = float(self.black_and_white_text.get())
@@ -174,7 +176,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.black_and_white(img, proc)
+        self.functions.black_and_white(proc)
 
     def press_warmth_button(self):
         proc = float(self.warmth_text.get())
@@ -182,7 +184,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.warmth(img, proc)
+        self.unctions.warmth(proc)
 
     def press_highlights_button(self):
         proc = float(self.highlights_text.get())
@@ -190,7 +192,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.highlights(img, proc)
+        self.functions.highlights(proc)
 
     def press_shadows_button(self):
         proc = float(self.shadows_text.get())
@@ -198,7 +200,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.shadows(img, proc)
+        self.functions.shadows(proc)
 
     def press_blur_button(self):
         type = float(self.blur_text.get())
@@ -206,7 +208,7 @@ class InstagramForPoor:
             type = 0
         if type > 5:
             type = 5
-        Functions.blur(img, type)
+        self.functions.blur(type)
 
     def press_sharpen_button(self):
         type = float(self.sharpen_text.get())
@@ -214,7 +216,7 @@ class InstagramForPoor:
             type = 0
         if type > 5:
             type = 5
-        Functions.sharpen(img, type)
+        self.functions.sharpen(type)
 
     def press_vignette_button(self):
         proc = float(self.vignette_text.get())
@@ -222,7 +224,7 @@ class InstagramForPoor:
             proc = 0
         if proc > 100:
             proc = 100
-        Functions.vignette(img, proc)
+        self.functions.vignette(proc)
 
     def press_zoom_in_button(self):
         proc = float(self.zoom_in_text.get())
@@ -230,14 +232,11 @@ class InstagramForPoor:
             proc = 0
         if proc > 200:
             proc = 200
-        Functions.zoom_in(img, proc)
+        self.functions.zoom_in(proc)
 
-    @staticmethod
-    def press_choose_file_button():
+    def press_choose_file_button(self):
         filepath = filedialog.askopenfilename()
-        print(filepath)
-        img = cv2.imread(filepath)
-        
+        self.functions = Functions(filepath)
 
 
 
