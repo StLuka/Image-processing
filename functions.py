@@ -8,7 +8,17 @@ CONST = 0.6
 class Functions:
 
     def __init__(self, filepath):
-        self.img = cv2.imread(filepath)
+        self.loaded_img = cv2.imread(filepath)
+
+        if self.loaded_img is not None:
+            width_ratio = 650 / self.loaded_img.shape[1]
+            height_ratio = 500 / self.loaded_img.shape[0]
+            scale_factor = min(width_ratio, height_ratio)
+
+            new_width = int(self.loaded_img.shape[1] * scale_factor)
+            new_height = int(self.loaded_img.shape[0] * scale_factor)
+
+            self.img = cv2.resize(self.loaded_img, (new_width, new_height))
 
     def contrast(self, proc):
         x = 128 * proc * CONST / 100
@@ -37,8 +47,7 @@ class Functions:
                                 self.img[h][w][c] = self.img[h][w][c] + x
                             else:
                                 self.img[h][w][c] = 128
-        cv2.imshow('Contrast image', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def brightness(self, proc):
         x = 255 * proc * CONST / 100
@@ -55,8 +64,7 @@ class Functions:
                             self.img[h][w][c] = self.img[h][w][c] + x
                         else:
                             self.img[h][w][c] = 0
-        cv2.imshow('Brightness image', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def black_and_white(self, proc):
         c = proc / 100
@@ -67,8 +75,7 @@ class Functions:
                 self.img[h][w][1] = (1 - c) * self.img[h][w][1] + c * t
                 self.img[h][w][2] = (1 - c) * self.img[h][w][2] + c * t
 
-        cv2.imshow('Black and white', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def highlights(self, proc):
         x = 128 * proc * CONST / 100
@@ -80,8 +87,7 @@ class Functions:
                             self.img[h][w][c] = self.img[h][w][c] + x
                         else:
                             self.img[h][w][c] = 255
-        cv2.imshow('Highlights', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def shadows(self, proc):
         x = 128 * proc * CONST / 100
@@ -93,8 +99,7 @@ class Functions:
                             self.img[h][w][c] = self.img[h][w][c] - x
                         else:
                             self.img[h][w][c] = 0
-        cv2.imshow('Shadows', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def warmth(self, proc):
         c = proc / 100 * CONST
@@ -111,8 +116,7 @@ class Functions:
                 self.img[h][w][1] = (1 - c) * self.img[h][w][1] + c * img2[h][w][1]
                 self.img[h][w][2] = (1 - c) * self.img[h][w][2] + c * img2[h][w][2]
 
-        cv2.imshow('Warmth', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def blur(self, type):
         if type == 1:
@@ -179,8 +183,7 @@ class Functions:
                                 except:
                                     sum = self.img[h][w][c] * 121
                         self.img[h][w][c] = sum / 121
-        cv2.imshow('Blur', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def sharpen(self, type):
         if type == 1:
@@ -199,8 +202,7 @@ class Functions:
                                     sum = self.img[h][w][c]
                         self.img[h][w][c] = sum
 
-        cv2.imshow('Sharpen', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def vignette(self, proc):
         m = numpy.empty((self.img.shape[0], self.img.shape[1]))
@@ -215,8 +217,7 @@ class Functions:
                         t = abs(min - m[h][w]) / (max - min)
                         self.img[h][w][c] = (1 - t) * self.img[h][w][c]
 
-        cv2.imshow('Vignette', self.img)
-        cv2.waitKey(0)
+        return self.img
 
     def zoom_in(self, proc):
         new_img = numpy.empty((self.img.shape[0], self.img.shape[1], self.img.shape[2]))
@@ -249,5 +250,4 @@ class Functions:
                         new_img[h][w][c] = new_img[h - 1][w][c]
                     self.img[h][w][c] = new_img[h][w][c]
 
-        cv2.imshow('Zoom in', self.img)
-        cv2.waitKey(0)
+        return self.img
